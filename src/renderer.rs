@@ -1,20 +1,26 @@
-use crate::framebuffer::{FrameBuffer, new_framebuffer};
+use crate::framebuffer::{FrameBuffer};
 use crate::consts::BLUE;
+use crate::player::Player;
 
 pub struct Renderer {
    pub(crate) frameBuffer : FrameBuffer
 }
 
-pub fn new_renderer(width: usize, height: usize) -> Renderer {
-  return Renderer{frameBuffer: new_framebuffer(width, height)};
-}
 
 impl Renderer {
-    pub fn draw(&mut self) {
-       self.frameBuffer.set_color_at(0, 0, BLUE)
+    pub fn new(width: usize, height: usize) -> Self {
+        return Self{frameBuffer: FrameBuffer::new(width, height)};
+    }
+
+    pub fn draw(&mut self, player: &Player) {
+       self.frameBuffer.set_color_at(player.position.x as usize,player.position.y as usize,BLUE)
     }
 
     pub fn pixels(&self) -> &Vec<u32> {
         return &self.frameBuffer.pixels;
+    }
+
+    pub fn clearFrameBuffer(&mut self) {
+        self.frameBuffer.clear()
     }
 }
