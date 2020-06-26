@@ -1,9 +1,10 @@
 use crate::consts::{WHITE, BLUE};
+use crate::rect::Rect;
 
 #[derive(Debug)]
 pub struct FrameBuffer {
-    width: usize,
-    height: usize,
+    pub width: usize,
+    pub height: usize,
     pub(crate) pixels: Vec<u32>
 }
 
@@ -32,6 +33,14 @@ impl FrameBuffer {
     pub fn clear(&mut self) {
         for p in &mut self.pixels {
             *p = WHITE;
+        }
+    }
+
+    pub fn fill(&mut self, rect: Rect, color: u32) {
+        for y in ((rect.min.y as usize)..(rect.max.y as usize)).step_by(1) {
+            for x in ((rect.min.x as usize)..(rect.max.x as usize)).step_by(1) {
+                self.set_color_at(x,y, color)
+            }
         }
     }
 }

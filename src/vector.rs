@@ -12,6 +12,15 @@ impl Vector {
             x,y
         }
     }
+
+    pub fn multiply(&mut self, multiplier: f64) {
+        self.x *= multiplier;
+        self.y *= multiplier;
+    }
+}
+
+pub fn multiply_vector(vector: Vector, multiplier: f64) -> Vector {
+    return Vector::new(vector.x * multiplier, vector.y * multiplier);
 }
 
 impl Add for Vector {
@@ -38,14 +47,6 @@ impl Sub for Vector {
 //     }
 // }
 //
-// impl Mul for Vector {
-//     type Output = Vector;
-//
-//     fn mul(self, other: f64) -> Vector {
-//         Vector{x: self.x * other, y: self.y}
-//     }
-// }
-
 impl AddAssign for Vector {
     fn add_assign(&mut self, other: Self) {
         *self = Self{x: self.x + other.x, y: self.y + other.y};

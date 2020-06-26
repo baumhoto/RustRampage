@@ -1,3 +1,5 @@
+mod rect;
+mod world;
 mod player;
 mod vector;
 mod renderer;
@@ -11,12 +13,13 @@ use crate::player::{Player};
 use crate::renderer::Renderer;
 use std::borrow::{BorrowMut, Borrow};
 use std::time::{Duration, Instant};
+use crate::world::World;
 
-const WIDTH: usize = 8;
-const HEIGHT: usize = 8;
+const WIDTH: usize = 320;
+const HEIGHT: usize = 320;
 
 fn main() {
-    let mut player = Player::new(Vector{ x: 4.0, y: 4.0 });
+    let mut world = World::new();
     let mut renderer = Renderer::new(WIDTH, HEIGHT);
 
     let mut window = Window::new(
@@ -24,7 +27,7 @@ fn main() {
         WIDTH,
         HEIGHT,
         WindowOptions {
-            scale: Scale::X32,
+            scale: Scale::X2,
             ..WindowOptions::default()
         },
     )
@@ -38,12 +41,11 @@ fn main() {
     let mut lastFrameTime: f64 = 0.0;
     while window.is_open() && !window.is_key_down(Key::Escape) {
         let now = Instant::now();
-
-        renderer.draw(&player);
+        renderer.draw(&world);
         // We unwrap here as we want this code to exit if it fails
         window.update_with_buffer(&renderer.pixels(), WIDTH, HEIGHT).unwrap();
-        player.update(lastFrameTime);
-        renderer.clearFrameBuffer();
+        world.update(lastFrameTime);
+        renderer.clear_frame_buffer();
         lastFrameTime = now.elapsed().as_secs_f64();
         //println!("{}", lastFrameTime)
     }
