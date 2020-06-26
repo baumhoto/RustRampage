@@ -5,7 +5,7 @@ Learning Rust by following https://github.com/nicklockwood/RetroRampage and impl
 
 Decided to use https://github.com/emoon/rust_minifb because it seems to be simple enough.
 
-<img src="pictures/rustrampage.png" alt="RustRampage">
+<img src="pictures/RustRampage.png" alt="RustRampage">
 
 ## Installation
 
