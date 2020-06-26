@@ -1,4 +1,4 @@
-# GoRampage
+# RustRampage
 RetroRampage for Rust
 
 Learning Rust by following https://github.com/nicklockwood/RetroRampage and implement it in Rust.
