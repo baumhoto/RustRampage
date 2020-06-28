@@ -1,5 +1,4 @@
 use crate::vector::Vector;
-use std::borrow::Borrow;
 use crate::rect::Rect;
 
 pub struct Player {
@@ -18,7 +17,7 @@ impl Player {
     }
 
     pub fn rect(&self) -> Rect {
-        let halfSize = Vector::new(self.radius, self.radius);
-        return Rect::new(self.position - halfSize, self.position + halfSize);
+        let half_size = Vector::new(self.radius, self.radius);
+        return Rect::new(self.position - half_size, self.position + half_size);
     }
 }

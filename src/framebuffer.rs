@@ -1,5 +1,5 @@
-use crate::consts::{WHITE, BLUE};
 use crate::rect::Rect;
+use crate::consts::BLACK;
 
 #[derive(Debug)]
 pub struct FrameBuffer {
@@ -12,7 +12,7 @@ pub struct FrameBuffer {
 
 impl FrameBuffer {
    pub fn new(width: usize, height: usize) -> Self {
-        let buffer: Vec<u32> = vec![WHITE; width * height];
+        let buffer: Vec<u32> = vec![BLACK; width * height];
         Self{
             width: width,
             height: height,
@@ -32,7 +32,7 @@ impl FrameBuffer {
 
     pub fn clear(&mut self) {
         for p in &mut self.pixels {
-            *p = WHITE;
+            *p = BLACK;
         }
     }
 
