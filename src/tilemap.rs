@@ -1,18 +1,21 @@
 use crate::tile::Tile;
 use crate::vector::Vector;
 use serde::Deserialize;
+use crate::thing::Thing;
 
 
 #[derive(Deserialize, Debug)]
 pub struct Tilemap {
     tiles: Vec<Tile>,
+    pub things: Vec<Thing>,
     pub width: usize
 }
 
 impl Tilemap {
-    pub fn new(tiles: Vec<Tile>, width: usize) -> Self {
+    pub fn new(tiles: Vec<Tile>, things: Vec<Thing>, width: usize) -> Self {
         Self {
             tiles,
+            things,
             width
         }
     }

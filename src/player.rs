@@ -1,6 +1,7 @@
 use crate::vector::Vector;
 use crate::rect::Rect;
 
+#[derive(Debug,Default)]
 pub struct Player {
     pub position: Vector,
     pub velocity: Vector,
@@ -10,8 +11,8 @@ pub struct Player {
 impl Player {
     pub fn new(position: Vector) -> Self {
        Self {
-           position: position,
-           velocity: Vector { x: 1.0, y: 1.0 },
+           position,
+           velocity: Vector { x: 0.0, y: 0.0 },
            radius: 0.5
        }
     }

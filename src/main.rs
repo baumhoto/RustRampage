@@ -1,3 +1,4 @@
+mod thing;
 mod tilemap;
 mod tile;
 mod rect;
@@ -23,9 +24,8 @@ const HEIGHT: usize = 320;
 fn main() {
 
     let tilemap = load_map().unwrap();
-
+    //println!("{:?}", tilemap);
     let mut world = World::new(tilemap);
-    //let mut world = World::new(Tilemap::new(Vec::new(), 8));
     let mut renderer = Renderer::new(WIDTH, HEIGHT);
 
     let mut window = Window::new(
