@@ -20,9 +20,14 @@ use crate::tilemap::Tilemap;
 use std::error::Error;
 use crate::vector::Vector;
 use crate::input::Input;
+use std::cmp::min;
 
 const WIDTH: usize = 320;
 const HEIGHT: usize = 320;
+
+const MAX_TIMESTEP : f64 = 1.0/20.0;
+const WORLD_TIMESTEP : f64 = 1.0/120.0;
+
 
 fn main() {
 
@@ -52,7 +57,13 @@ fn main() {
         let now = Instant::now();
         let input = handle_input(&window);
 
-        world.update(last_frame_time, input);
+        let timestep = f64::min(MAX_TIMESTEP, last_frame_time);
+        let worldSteps = (timestep / WORLD_TIMESTEP).ceil();
+
+        for i in (0.. worldSteps as i32).step_by(1) {
+            world.update(timestep, &input);
+        }
+
         renderer.draw(&world);
 
         // We unwrap here as we want this code to exit if it fails

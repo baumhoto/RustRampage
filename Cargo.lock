@@ -5,6 +5,7 @@ name = "RustRampage"
 version = "0.1.0"
 dependencies = [
  "minifb",
+ "ordered-float",
  "serde",
  "serde_json",
  "serde_repr",
@@ -212,6 +213,15 @@ checksum = "f8b18f57ab94fbd058e30aa57f712ec423c0bb7403f8493a6c58eef0c36d9402"
 dependencies = [
  "redox_syscall",
  "sdl2",
+]
+
+[[package]]
+name = "ordered-float"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "18869315e81473c951eb56ad5558bbc56978562d3ecfb87abb7a1e944cea4518"
+dependencies = [
+ "num-traits",
 ]
 
 [[package]]

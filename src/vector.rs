@@ -21,6 +21,10 @@ impl Vector {
     pub fn multiply_vector(vector: Vector, multiplier: f64) -> Vector {
         return Vector::new(vector.x * multiplier, vector.y * multiplier);
     }
+
+    pub fn length(&self) -> f64 {
+        return (self.x * self.x + self.y * self.y).sqrt()
+    }
 }
 
 

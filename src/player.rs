@@ -25,19 +25,28 @@ impl Player {
         return Rect::new(self.position - half_size, self.position + half_size);
     }
 
-    pub fn is_intersecting(&self, map: &Tilemap) -> bool {
+    pub fn is_intersecting(&self, map: &Tilemap) -> Option<Vector> {
         let rect = self.rect();
         let (minX, maxX, minY, maxY)
             = (rect.min.x as usize, rect.max.x as usize,
                rect.min.y as usize, rect.max.y as usize);
+        let mut largestIntersection: Option<Vector> = None;
         for y in (minY..=maxY).step_by(1) {
             for x in (minX..=maxX).step_by(1) {
                 if map.get_tile(x, y).is_wall() {
-                    return true
+                    let wallRect = Rect::new(Vector::new(x as f64, y as f64),
+                                                    Vector::new((x+1) as f64, (y+1)
+                                                        as f64));
+                    let intersection = rect.intersection(wallRect);
+                    if largestIntersection.is_none() ||
+                        (intersection.is_some()
+                            && intersection.unwrap().length() > largestIntersection.unwrap().length()) {
+                        largestIntersection = intersection.clone();
+                    }
                 }
             }
         }
-        return false;
+        return largestIntersection;
     }
 
 }
