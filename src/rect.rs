@@ -1,5 +1,6 @@
 use crate::vector::Vector;
 
+#[derive(Debug)]
 pub struct Rect {
     pub min: Vector,
     pub max: Vector

@@ -33,8 +33,13 @@ impl World {
     }
 
     pub fn update(&mut self, time_step: f64, input: Input) {
+        let oldPosition = self.player.position.clone();
         self.player.velocity = Vector::multiply_vector(input.velocity, self.player.speed);
         self.player.position += Vector::multiply_vector(self.player.velocity, time_step);
+        if self.player.is_intersecting(&self.map) {
+            self.player.position = oldPosition
+        }
+
         self.player.position.x = self.player.position.x % 8.0;
         self.player.position.y = self.player.position.y % 8.0;
         //println!("{}", self.position.x)
