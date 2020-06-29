@@ -17,11 +17,12 @@ impl Vector {
         self.x *= multiplier;
         self.y *= multiplier;
     }
+
+    pub fn multiply_vector(vector: Vector, multiplier: f64) -> Vector {
+        return Vector::new(vector.x * multiplier, vector.y * multiplier);
+    }
 }
 
-pub fn multiply_vector(vector: Vector, multiplier: f64) -> Vector {
-    return Vector::new(vector.x * multiplier, vector.y * multiplier);
-}
 
 impl Add for Vector {
     type Output = Vector;

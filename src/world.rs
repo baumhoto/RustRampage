@@ -1,8 +1,8 @@
 use crate::player::Player;
-use crate::vector::Vector;
+use crate::vector::{Vector};
 use crate::tilemap::Tilemap;
 use crate::thing::Thing;
-use std::ptr::null;
+use crate::input::Input;
 
 pub struct World {
     pub map: Tilemap,
@@ -32,9 +32,9 @@ impl World {
         }
     }
 
-    pub fn update(&mut self, time_step: f64) {
-        let temp = Vector::new(self.player.velocity.x * time_step, self.player.velocity.y * time_step);
-        self.player.position += temp;
+    pub fn update(&mut self, time_step: f64, input: Input) {
+        self.player.velocity = Vector::multiply_vector(input.velocity, self.player.speed);
+        self.player.position += Vector::multiply_vector(self.player.velocity, time_step);
         self.player.position.x = self.player.position.x % 8.0;
         self.player.position.y = self.player.position.y % 8.0;
         //println!("{}", self.position.x)

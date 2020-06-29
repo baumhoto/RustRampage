@@ -1,3 +1,4 @@
+mod input;
 mod thing;
 mod tilemap;
 mod tile;
@@ -17,6 +18,8 @@ use std::fs::File;
 use std::io::BufReader;
 use crate::tilemap::Tilemap;
 use std::error::Error;
+use crate::vector::Vector;
+use crate::input::Input;
 
 const WIDTH: usize = 320;
 const HEIGHT: usize = 320;
@@ -47,12 +50,16 @@ fn main() {
     let mut last_frame_time: f64 = 0.0;
     while window.is_open() && !window.is_key_down(Key::Escape) {
         let now = Instant::now();
+        let input = handle_input(&window);
+
+        world.update(last_frame_time, input);
         renderer.draw(&world);
+
         // We unwrap here as we want this code to exit if it fails
         window.update_with_buffer(&renderer.pixels(), WIDTH, HEIGHT).unwrap();
-        world.update(last_frame_time);
-        renderer.clear_frame_buffer();
         last_frame_time = now.elapsed().as_secs_f64();
+
+        renderer.clear_frame_buffer();
         //println!("{}", lastFrameTime)
     }
 }
@@ -62,5 +69,20 @@ fn load_map() -> Result<Tilemap, Box<dyn Error>> {
     let reader = BufReader::new(f);
     let tilemap = serde_json::from_reader(reader)?;
     Ok(tilemap)
+}
+
+fn handle_input(window: &Window) -> Input {
+    let mut input = Input::new(Vector::new(0.0,0.0));
+    if window.is_key_down(Key::Up) {
+         input.velocity.y = -1.0
+    } else if window.is_key_down(Key::Down) {
+        input.velocity.y = 1.0
+    } else if window.is_key_down(Key::Left) {
+        input.velocity.x = -1.0
+    } else if window.is_key_down(Key::Right) {
+        input.velocity.x = 1.0
+    }
+
+    return input;
 }
 

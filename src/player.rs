@@ -5,7 +5,8 @@ use crate::rect::Rect;
 pub struct Player {
     pub position: Vector,
     pub velocity: Vector,
-    pub radius: f64
+    pub radius: f64,
+    pub speed: f64
 }
 
 impl Player {
@@ -13,7 +14,8 @@ impl Player {
        Self {
            position,
            velocity: Vector { x: 0.0, y: 0.0 },
-           radius: 0.5
+           radius: 0.5,
+           speed: 2.0
        }
     }
 
