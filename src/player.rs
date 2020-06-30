@@ -6,6 +6,7 @@ use crate::tilemap::Tilemap;
 pub struct Player {
     pub position: Vector,
     pub velocity: Vector,
+    pub direction: Vector,
     pub radius: f64,
     pub speed: f64
 }
@@ -15,6 +16,7 @@ impl Player {
        Self {
            position,
            velocity: Vector { x: 0.0, y: 0.0 },
+           direction: Vector { x: 1.0, y: 0.0},
            radius: 0.25,
            speed: 2.0
        }
@@ -27,26 +29,26 @@ impl Player {
 
     pub fn is_intersecting(&self, map: &Tilemap) -> Option<Vector> {
         let rect = self.rect();
-        let (minX, maxX, minY, maxY)
+        let (min_x, max_x, min_y, max_y)
             = (rect.min.x as usize, rect.max.x as usize,
                rect.min.y as usize, rect.max.y as usize);
-        let mut largestIntersection: Option<Vector> = None;
-        for y in (minY..=maxY).step_by(1) {
-            for x in (minX..=maxX).step_by(1) {
+        let mut largest_intersection: Option<Vector> = None;
+        for y in (min_y..=max_y).step_by(1) {
+            for x in (min_x..=max_x).step_by(1) {
                 if map.get_tile(x, y).is_wall() {
-                    let wallRect = Rect::new(Vector::new(x as f64, y as f64),
-                                                    Vector::new((x+1) as f64, (y+1)
+                    let wall_rect = Rect::new(Vector::new(x as f64, y as f64),
+                                              Vector::new((x+1) as f64, (y+1)
                                                         as f64));
-                    let intersection = rect.intersection(wallRect);
-                    if largestIntersection.is_none() ||
+                    let intersection = rect.intersection(wall_rect);
+                    if largest_intersection.is_none() ||
                         (intersection.is_some()
-                            && intersection.unwrap().length() > largestIntersection.unwrap().length()) {
-                        largestIntersection = intersection.clone();
+                            && intersection.unwrap().length() > largest_intersection.unwrap().length()) {
+                        largest_intersection = intersection.clone();
                     }
                 }
             }
         }
-        return largestIntersection;
+        return largest_intersection;
     }
 
 }

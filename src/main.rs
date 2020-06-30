@@ -20,7 +20,6 @@ use crate::tilemap::Tilemap;
 use std::error::Error;
 use crate::vector::Vector;
 use crate::input::Input;
-use std::cmp::min;
 
 const WIDTH: usize = 320;
 const HEIGHT: usize = 320;
@@ -58,9 +57,9 @@ fn main() {
         let input = handle_input(&window);
 
         let timestep = f64::min(MAX_TIMESTEP, last_frame_time);
-        let worldSteps = (timestep / WORLD_TIMESTEP).ceil();
+        let world_steps = (timestep / WORLD_TIMESTEP).ceil();
 
-        for i in (0.. worldSteps as i32).step_by(1) {
+        for _ in (0.. world_steps as i32).step_by(1) {
             world.update(timestep, &input);
         }
 

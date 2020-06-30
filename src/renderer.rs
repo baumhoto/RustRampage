@@ -1,5 +1,5 @@
 use crate::framebuffer::{FrameBuffer};
-use crate::consts::{BLUE, WHITE};
+use crate::consts::{BLUE, WHITE, GREEN};
 use crate::world::World;
 use crate::rect::Rect;
 use crate::vector::Vector;
@@ -35,6 +35,11 @@ impl Renderer {
         rect.min.multiply(scale);   // = multiply_vector(rect.min, scale);
         rect.max.multiply(scale);  // = multiply_vector(rect.max, scale);
         self.frame_buffer.fill(rect, BLUE);
+
+        // Draw line of sight
+        let end = world.player.position + Vector::multiply_vector(world.player.direction, 100.0);
+        self.frame_buffer.draw_line(Vector::multiply_vector(world.player.position, scale),
+                                    Vector::multiply_vector(end, scale), GREEN);
     }
 
     pub fn pixels(&self) -> &Vec<u32> {

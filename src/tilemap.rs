@@ -12,14 +12,6 @@ pub struct Tilemap {
 }
 
 impl Tilemap {
-    pub fn new(tiles: Vec<Tile>, things: Vec<Thing>, width: usize) -> Self {
-        Self {
-            tiles,
-            things,
-            width
-        }
-    }
-
     pub fn height(&self) -> usize {
        return self.tiles.len() / self.width
     }

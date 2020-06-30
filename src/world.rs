@@ -33,9 +33,14 @@ impl World {
     }
 
     pub fn update(&mut self, time_step: f64, input: &Input) {
+        let length = input.velocity.length();
+        if length > 0.0 {
+            self.player.direction = Vector::divide_vector(input.velocity, length);
+        }
         self.player.velocity = Vector::multiply_vector(input.velocity, self.player.speed);
         self.player.position += Vector::multiply_vector(self.player.velocity, time_step);
-        while let intersection = self.player.is_intersecting(&self.map) {
+        loop  {
+            let intersection = self.player.is_intersecting(&self.map);
             if intersection.is_some() {
                 self.player.position -= intersection.unwrap()
             } else {
