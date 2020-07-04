@@ -1,14 +1,12 @@
 use crate::vector::Vector;
 
-#[derive(Debug,Default)]
+#[derive(Debug, Default)]
 pub struct Input {
-    pub velocity: Vector
+    pub velocity: Vector,
 }
 
 impl Input {
     pub fn new(velocity: Vector) -> Self {
-        Self {
-            velocity
-        }
+        Self { velocity }
     }
 }

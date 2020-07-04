@@ -4,5 +4,5 @@ use serde_repr::*;
 #[repr(u8)]
 pub enum Thing {
     Nothing,
-    Player
+    Player,
 }

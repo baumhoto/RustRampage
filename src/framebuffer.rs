@@ -1,23 +1,21 @@
-use crate::rect::Rect;
 use crate::consts::BLACK;
+use crate::rect::Rect;
 use crate::vector::Vector;
 
 #[derive(Debug)]
 pub struct FrameBuffer {
     pub width: usize,
     pub height: usize,
-    pub(crate) pixels: Vec<u32>
+    pub(crate) pixels: Vec<u32>,
 }
 
-
-
 impl FrameBuffer {
-   pub fn new(width: usize, height: usize) -> Self {
+    pub fn new(width: usize, height: usize) -> Self {
         let buffer: Vec<u32> = vec![BLACK; width * height];
-        Self{
+        Self {
             width: width,
             height: height,
-            pixels: buffer
+            pixels: buffer,
         }
     }
 
@@ -36,7 +34,7 @@ impl FrameBuffer {
     pub fn fill(&mut self, rect: Rect, color: u32) {
         for y in ((rect.min.y as usize)..(rect.max.y as usize)).step_by(1) {
             for x in ((rect.min.x as usize)..(rect.max.x as usize)).step_by(1) {
-                self.set_color_at(x,y, color)
+                self.set_color_at(x, y, color)
             }
         }
     }
@@ -48,12 +46,18 @@ impl FrameBuffer {
         if f64::abs(difference.x) > f64::abs(difference.y) {
             step_count = f64::abs(difference.x).ceil() as usize;
             let sign = if difference.x > 0.0 { 1.0 } else { -1.0 };
-            step = Vector {x: 1.0 , y: difference.y / difference.x};
+            step = Vector {
+                x: 1.0,
+                y: difference.y / difference.x,
+            };
             step.multiply(sign);
         } else {
             step_count = f64::abs(difference.y).ceil() as usize;
             let sign = if difference.y > 0.0 { 1.0 } else { -1.0 };
-            step = Vector {x: difference.x / difference.y, y: 1.0 };
+            step = Vector {
+                x: difference.x / difference.y,
+                y: 1.0,
+            };
             step.multiply(sign);
         }
 

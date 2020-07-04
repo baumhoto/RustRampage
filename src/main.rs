@@ -1,35 +1,34 @@
-mod input;
-mod thing;
-mod tilemap;
-mod tile;
-mod rect;
-mod world;
-mod player;
-mod vector;
-mod renderer;
 mod consts;
 mod framebuffer;
+mod input;
+mod player;
+mod ray;
+mod rect;
+mod renderer;
+mod thing;
+mod tile;
+mod tilemap;
+mod vector;
+mod world;
 
-use minifb::{Key, Scale, Window, WindowOptions};
+use crate::input::Input;
 use crate::renderer::Renderer;
-use std::time::{Instant};
+use crate::tilemap::Tilemap;
+use crate::vector::Vector;
 use crate::world::World;
+use minifb::{Key, Scale, Window, WindowOptions};
+use std::error::Error;
 use std::fs::File;
 use std::io::BufReader;
-use crate::tilemap::Tilemap;
-use std::error::Error;
-use crate::vector::Vector;
-use crate::input::Input;
+use std::time::Instant;
 
 const WIDTH: usize = 320;
 const HEIGHT: usize = 320;
 
-const MAX_TIMESTEP : f64 = 1.0/20.0;
-const WORLD_TIMESTEP : f64 = 1.0/120.0;
-
+const MAX_TIMESTEP: f64 = 1.0 / 20.0;
+const WORLD_TIMESTEP: f64 = 1.0 / 120.0;
 
 fn main() {
-
     let tilemap = load_map().unwrap();
     //println!("{:?}", tilemap);
     let mut world = World::new(tilemap);
@@ -44,7 +43,7 @@ fn main() {
             ..WindowOptions::default()
         },
     )
-        .expect("Unable to Open Window");
+    .expect("Unable to Open Window");
 
     window.set_title("RustRampage");
 
@@ -59,14 +58,16 @@ fn main() {
         let timestep = f64::min(MAX_TIMESTEP, last_frame_time);
         let world_steps = (timestep / WORLD_TIMESTEP).ceil();
 
-        for _ in (0.. world_steps as i32).step_by(1) {
+        for _ in (0..world_steps as i32).step_by(1) {
             world.update(timestep, &input);
         }
 
         renderer.draw(&world);
 
         // We unwrap here as we want this code to exit if it fails
-        window.update_with_buffer(&renderer.pixels(), WIDTH, HEIGHT).unwrap();
+        window
+            .update_with_buffer(&renderer.pixels(), WIDTH, HEIGHT)
+            .unwrap();
         last_frame_time = now.elapsed().as_secs_f64();
 
         renderer.clear_frame_buffer();
@@ -82,9 +83,9 @@ fn load_map() -> Result<Tilemap, Box<dyn Error>> {
 }
 
 fn handle_input(window: &Window) -> Input {
-    let mut input = Input::new(Vector::new(0.0,0.0));
+    let mut input = Input::new(Vector::new(0.0, 0.0));
     if window.is_key_down(Key::Up) {
-         input.velocity.y = -1.0
+        input.velocity.y = -1.0
     } else if window.is_key_down(Key::Down) {
         input.velocity.y = 1.0
     } else if window.is_key_down(Key::Left) {
@@ -95,4 +96,3 @@ fn handle_input(window: &Window) -> Input {
 
     return input;
 }
-

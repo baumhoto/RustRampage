@@ -4,14 +4,14 @@ use serde_repr::*;
 #[repr(u8)]
 pub enum Tile {
     Floor,
-    Wall
+    Wall,
 }
 
 impl Tile {
     pub fn is_wall(&self) -> bool {
         match self {
             Tile::Floor => false,
-            Tile::Wall => true
+            Tile::Wall => true,
         }
     }
 }

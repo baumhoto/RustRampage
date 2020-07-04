@@ -1,17 +1,19 @@
-use crate::framebuffer::{FrameBuffer};
-use crate::consts::{BLUE, WHITE, GREEN};
-use crate::world::World;
+use crate::consts::{BLUE, GREEN, WHITE};
+use crate::framebuffer::FrameBuffer;
+use crate::ray::Ray;
 use crate::rect::Rect;
 use crate::vector::Vector;
+use crate::world::World;
 
 pub struct Renderer {
-   pub(crate) frame_buffer: FrameBuffer
+    pub(crate) frame_buffer: FrameBuffer,
 }
-
 
 impl Renderer {
     pub fn new(width: usize, height: usize) -> Self {
-        return Self{ frame_buffer: FrameBuffer::new(width, height)};
+        return Self {
+            frame_buffer: FrameBuffer::new(width, height),
+        };
     }
 
     pub fn draw(&mut self, world: &World) {
@@ -23,7 +25,7 @@ impl Renderer {
                 if world.map.get_tile(x, y).is_wall() {
                     let rect = Rect::new(
                         Vector::new(x as f64 * scale, y as f64 * scale),
-                        Vector::new((x + 1) as f64 * scale, (y+1) as f64 * scale)
+                        Vector::new((x + 1) as f64 * scale, (y + 1) as f64 * scale),
                     );
                     self.frame_buffer.fill(rect, WHITE)
                 }
@@ -32,14 +34,18 @@ impl Renderer {
 
         //Draw Player
         let mut rect = world.player.rect();
-        rect.min.multiply(scale);   // = multiply_vector(rect.min, scale);
-        rect.max.multiply(scale);  // = multiply_vector(rect.max, scale);
+        rect.min.multiply(scale); // = multiply_vector(rect.min, scale);
+        rect.max.multiply(scale); // = multiply_vector(rect.max, scale);
         self.frame_buffer.fill(rect, BLUE);
 
         // Draw line of sight
-        let end = world.player.position + Vector::multiply_vector(world.player.direction, 100.0);
-        self.frame_buffer.draw_line(Vector::multiply_vector(world.player.position, scale),
-                                    Vector::multiply_vector(end, scale), GREEN);
+        let ray = Ray::new(world.player.position, world.player.direction);
+        let end = world.map.hit_test(ray);
+        self.frame_buffer.draw_line(
+            Vector::multiply_vector(world.player.position, scale),
+            Vector::multiply_vector(end, scale),
+            GREEN,
+        );
     }
 
     pub fn pixels(&self) -> &Vec<u32> {
