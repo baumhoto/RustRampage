@@ -11,9 +11,16 @@ impl Vector {
         Self { x, y }
     }
 
-    pub fn multiply(&mut self, multiplier: f64) {
+    pub fn multiply(&mut self, multiplier: f64) -> &mut Vector {
         self.x *= multiplier;
         self.y *= multiplier;
+        return self;
+    }
+
+    pub fn divide(&mut self, divisor: f64) -> &mut Vector {
+        self.x /= divisor;
+        self.y /= divisor;
+        return self;
     }
 
     pub fn multiply_vector(vector: Vector, multiplier: f64) -> Vector {
@@ -26,6 +33,10 @@ impl Vector {
 
     pub fn length(&self) -> f64 {
         return (self.x * self.x + self.y * self.y).sqrt();
+    }
+
+    pub fn orthogonal(&self) -> Vector {
+        return Vector::new(-self.y, self.x);
     }
 }
 

@@ -1,6 +1,6 @@
 use crate::vector::Vector;
-use std::ops::AddAssign;
 
+#[derive(Debug, Copy, Clone)]
 pub struct Ray {
     pub origin: Vector,
     pub direction: Vector,

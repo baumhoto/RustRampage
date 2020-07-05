@@ -9,9 +9,9 @@ pub enum Tile {
 
 impl Tile {
     pub fn is_wall(&self) -> bool {
-        match self {
-            Tile::Floor => false,
+        return match self {
             Tile::Wall => true,
-        }
+            _ => false,
+        };
     }
 }

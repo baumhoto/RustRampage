@@ -34,10 +34,18 @@ impl Tilemap {
             offsetY = if direction.y > 0.0 { 0.0 } else { -1.0 };
         }
 
-        return &self.get_tile(
-            (position.x + offsetX) as usize,
-            (position.y + offsetY) as usize,
-        );
+        let x = if (position.x + offsetX) >= 0.0 {
+            (position.x + offsetX) as usize
+        } else {
+            0
+        };
+        let y = if (position.y + offsetY) >= 0.0 {
+            (position.y + offsetY) as usize
+        } else {
+            0
+        };
+        //println!("{:?} {:?}", x, y);
+        return &self.get_tile(x, y);
     }
 
     pub fn hit_test(&self, ray: Ray) -> Vector {
@@ -60,14 +68,18 @@ impl Tilemap {
                 edge_distance_y = f64::ceil(position.y) - 1.0 - position.y;
             }
 
-            let step1 = Vector::new(edge_distance_x, edge_distance_y);
+            let step1 = Vector::new(edge_distance_x, edge_distance_x * slope);
             let step2 = Vector::new(edge_distance_y * slope, edge_distance_y);
 
             if step1.length() < step2.length() {
-                position = position + step1
+                position += step1
             } else {
-                position = position + step2
+                position += step2
             };
+            println!("{:?} {:?} {:?}", position, step1, step2);
+            if position.x > 8.0 || position.y > 8.0 {
+                break;
+            }
 
             if self.tile(position, ray.direction).is_wall() == true {
                 break;
