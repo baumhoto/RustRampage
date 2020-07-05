@@ -68,7 +68,7 @@ impl Tilemap {
                 edge_distance_y = f64::ceil(position.y) - 1.0 - position.y;
             }
 
-            let step1 = Vector::new(edge_distance_x, edge_distance_x * slope);
+            let step1 = Vector::new(edge_distance_x, edge_distance_x / slope);
             let step2 = Vector::new(edge_distance_y * slope, edge_distance_y);
 
             if step1.length() < step2.length() {
@@ -76,10 +76,6 @@ impl Tilemap {
             } else {
                 position += step2
             };
-            println!("{:?} {:?} {:?}", position, step1, step2);
-            if position.x > 8.0 || position.y > 8.0 {
-                break;
-            }
 
             if self.tile(position, ray.direction).is_wall() == true {
                 break;
