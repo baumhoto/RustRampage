@@ -25,22 +25,22 @@ impl Tilemap {
     }
 
     fn tile(&self, position: Vector, direction: Vector) -> &Tile {
-        let mut offsetX: f64 = 0.0;
-        let mut offsetY: f64 = 0.0;
+        let mut offset_x: f64 = 0.0;
+        let mut offset_y: f64 = 0.0;
         if f64::floor(position.x) == position.x {
-            offsetX = if direction.x > 0.0 { 0.0 } else { -1.0 };
+            offset_x = if direction.x > 0.0 { 0.0 } else { -1.0 };
         }
         if f64::floor(position.y) == position.y {
-            offsetY = if direction.y > 0.0 { 0.0 } else { -1.0 };
+            offset_y = if direction.y > 0.0 { 0.0 } else { -1.0 };
         }
 
-        let x = if (position.x + offsetX) >= 0.0 {
-            (position.x + offsetX) as usize
+        let x = if (position.x + offset_x) >= 0.0 {
+            (position.x + offset_x) as usize
         } else {
             0
         };
-        let y = if (position.y + offsetY) >= 0.0 {
-            (position.y + offsetY) as usize
+        let y = if (position.y + offset_y) >= 0.0 {
+            (position.y + offset_y) as usize
         } else {
             0
         };

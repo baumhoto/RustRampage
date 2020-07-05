@@ -66,7 +66,7 @@ impl Renderer {
         let step = Vector::divide_vector(view_plane, columns as f64);
         let mut column_position = view_start;
 
-        for x in 0..columns {
+        for _ in 0..columns {
             let ray_direction = column_position - world.player.position;
             let view_plane_distance = ray_direction.length();
             let ray = Ray::new(

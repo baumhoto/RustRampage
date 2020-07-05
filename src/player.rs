@@ -1,6 +1,7 @@
 use crate::rect::Rect;
 use crate::tilemap::Tilemap;
 use crate::vector::Vector;
+use std::f64::consts::PI;
 
 #[derive(Debug, Default)]
 pub struct Player {
@@ -9,6 +10,7 @@ pub struct Player {
     pub direction: Vector,
     pub radius: f64,
     pub speed: f64,
+    pub turning_speed: f64,
 }
 
 impl Player {
@@ -18,7 +20,8 @@ impl Player {
             velocity: Vector { x: 0.0, y: 0.0 },
             direction: Vector { x: 1.0, y: 0.0 },
             radius: 0.25,
-            speed: 2.0,
+            speed: 3.0,
+            turning_speed: PI,
         }
     }
 
