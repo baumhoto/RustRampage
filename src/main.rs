@@ -25,7 +25,7 @@ use std::io::BufReader;
 use std::time::Instant;
 
 const WIDTH: usize = 320;
-const HEIGHT: usize = 320;
+const HEIGHT: usize = 240;
 
 const MAX_TIMESTEP: f64 = 1.0 / 20.0;
 const WORLD_TIMESTEP: f64 = 1.0 / 120.0;

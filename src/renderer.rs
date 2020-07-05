@@ -1,4 +1,4 @@
-use crate::consts::{BLUE, GREEN, RED, WHITE};
+use crate::consts::{BLUE, GRAY, GREEN, RED, WHITE};
 use crate::framebuffer::FrameBuffer;
 use crate::ray::Ray;
 use crate::rect::Rect;
@@ -17,6 +17,53 @@ impl Renderer {
     }
 
     pub fn draw(&mut self, world: &World) {
+        let focal_length = 1.0;
+        let view_width = self.frame_buffer.width as f64 / self.frame_buffer.height as f64;
+        let view_plane = Vector::multiply_vector(world.player.direction.orthogonal(), view_width);
+        let view_center =
+            world.player.position + Vector::multiply_vector(world.player.direction, focal_length);
+        let view_start = view_center - Vector::divide_vector(view_plane, 2.0);
+
+        // Cast rays
+        let columns = self.frame_buffer.width;
+        let step = Vector::divide_vector(view_plane, columns as f64);
+        let mut column_position = view_start;
+
+        for x in 0..columns {
+            let ray_direction = column_position - world.player.position;
+            let view_plane_distance = ray_direction.length();
+            let ray = Ray::new(
+                world.player.position,
+                Vector::divide_vector(ray_direction, view_plane_distance),
+            );
+            let end = world.map.hit_test(ray);
+            let wallDistance = (end - ray.origin).length();
+
+            // Draw wall
+            let wallHeight = 1.0;
+            let distanceRatio = view_plane_distance / focal_length;
+            let perpendicular = wallDistance / distanceRatio;
+            let height =
+                wallHeight * focal_length / perpendicular * self.frame_buffer.height as f64;
+
+            let wallColor: u32;
+            if f64::floor(end.x) == end.x {
+                wallColor = WHITE;
+            } else {
+                wallColor = GRAY;
+            }
+
+            self.frame_buffer.draw_line(
+                Vector::new(x as f64, (self.frame_buffer.height as f64 - height) / 2.0),
+                Vector::new(x as f64, (self.frame_buffer.height as f64 + height) / 2.0),
+                wallColor,
+            );
+
+            column_position += step;
+        }
+    }
+
+    pub fn draw_2D(&mut self, world: &World) {
         let scale = self.frame_buffer.height as f64 / world.size().y;
 
         // Draw map
