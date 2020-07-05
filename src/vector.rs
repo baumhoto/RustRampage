@@ -1,3 +1,4 @@
+use crate::rotation::Rotation;
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
 #[derive(Debug, Copy, Clone, Default)]
@@ -11,9 +12,16 @@ impl Vector {
         Self { x, y }
     }
 
-    pub fn multiply(&mut self, multiplier: f64) {
+    pub fn multiply(&mut self, multiplier: f64) -> &mut Vector {
         self.x *= multiplier;
         self.y *= multiplier;
+        return self;
+    }
+
+    pub fn divide(&mut self, divisor: f64) -> &mut Vector {
+        self.x /= divisor;
+        self.y /= divisor;
+        return self;
     }
 
     pub fn multiply_vector(vector: Vector, multiplier: f64) -> Vector {
@@ -26,6 +34,17 @@ impl Vector {
 
     pub fn length(&self) -> f64 {
         return (self.x * self.x + self.y * self.y).sqrt();
+    }
+
+    pub fn orthogonal(&self) -> Vector {
+        return Vector::new(-self.y, self.x);
+    }
+
+    pub fn rotated(&self, rotation: Rotation) -> Vector {
+        Vector {
+            x: self.x * rotation.m1 + self.y * rotation.m2,
+            y: self.x * rotation.m3 + self.y * rotation.m4,
+        }
     }
 }
 

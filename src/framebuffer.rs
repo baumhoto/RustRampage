@@ -50,7 +50,7 @@ impl FrameBuffer {
                 x: 1.0,
                 y: difference.y / difference.x,
             };
-            step.multiply(sign);
+            step = Vector::multiply_vector(step, sign)
         } else {
             step_count = f64::abs(difference.y).ceil() as usize;
             let sign = if difference.y > 0.0 { 1.0 } else { -1.0 };
@@ -58,7 +58,7 @@ impl FrameBuffer {
                 x: difference.x / difference.y,
                 y: 1.0,
             };
-            step.multiply(sign);
+            step = Vector::multiply_vector(step, sign);
         }
 
         let mut point = from;

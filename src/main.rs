@@ -5,6 +5,7 @@ mod player;
 mod ray;
 mod rect;
 mod renderer;
+mod rotation;
 mod thing;
 mod tile;
 mod tilemap;
@@ -13,6 +14,7 @@ mod world;
 
 use crate::input::Input;
 use crate::renderer::Renderer;
+use crate::rotation::Rotation;
 use crate::tilemap::Tilemap;
 use crate::vector::Vector;
 use crate::world::World;
@@ -23,7 +25,7 @@ use std::io::BufReader;
 use std::time::Instant;
 
 const WIDTH: usize = 320;
-const HEIGHT: usize = 320;
+const HEIGHT: usize = 240;
 
 const MAX_TIMESTEP: f64 = 1.0 / 20.0;
 const WORLD_TIMESTEP: f64 = 1.0 / 120.0;
@@ -53,7 +55,7 @@ fn main() {
     let mut last_frame_time: f64 = 0.0;
     while window.is_open() && !window.is_key_down(Key::Escape) {
         let now = Instant::now();
-        let input = handle_input(&window);
+        let input = handle_input(&window, world.player.turning_speed);
 
         let timestep = f64::min(MAX_TIMESTEP, last_frame_time);
         let world_steps = (timestep / WORLD_TIMESTEP).ceil();
@@ -82,17 +84,23 @@ fn load_map() -> Result<Tilemap, Box<dyn Error>> {
     Ok(tilemap)
 }
 
-fn handle_input(window: &Window) -> Input {
-    let mut input = Input::new(Vector::new(0.0, 0.0));
+fn handle_input(window: &Window, turing_speed: f64) -> Input {
+    let mut input_vector = Vector::default();
     if window.is_key_down(Key::Up) {
-        input.velocity.y = -1.0
+        input_vector.y = -1.0
     } else if window.is_key_down(Key::Down) {
-        input.velocity.y = 1.0
+        input_vector.y = 1.0
     } else if window.is_key_down(Key::Left) {
-        input.velocity.x = -1.0
+        input_vector.x = -1.0
     } else if window.is_key_down(Key::Right) {
-        input.velocity.x = 1.0
+        input_vector.x = 1.0
     }
 
+    let rotation = input_vector.x * turing_speed * WORLD_TIMESTEP;
+
+    let input = Input::new(
+        -input_vector.y,
+        Rotation::new(f64::sin(rotation), f64::cos(rotation)),
+    );
     return input;
 }

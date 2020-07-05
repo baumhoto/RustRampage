@@ -25,19 +25,27 @@ impl Tilemap {
     }
 
     fn tile(&self, position: Vector, direction: Vector) -> &Tile {
-        let mut offsetX: f64 = 0.0;
-        let mut offsetY: f64 = 0.0;
+        let mut offset_x: f64 = 0.0;
+        let mut offset_y: f64 = 0.0;
         if f64::floor(position.x) == position.x {
-            offsetX = if direction.x > 0.0 { 0.0 } else { -1.0 };
+            offset_x = if direction.x > 0.0 { 0.0 } else { -1.0 };
         }
         if f64::floor(position.y) == position.y {
-            offsetY = if direction.y > 0.0 { 0.0 } else { -1.0 };
+            offset_y = if direction.y > 0.0 { 0.0 } else { -1.0 };
         }
 
-        return &self.get_tile(
-            (position.x + offsetX) as usize,
-            (position.y + offsetY) as usize,
-        );
+        let x = if (position.x + offset_x) >= 0.0 {
+            (position.x + offset_x) as usize
+        } else {
+            0
+        };
+        let y = if (position.y + offset_y) >= 0.0 {
+            (position.y + offset_y) as usize
+        } else {
+            0
+        };
+        //println!("{:?} {:?}", x, y);
+        return &self.get_tile(x, y);
     }
 
     pub fn hit_test(&self, ray: Ray) -> Vector {
@@ -60,13 +68,13 @@ impl Tilemap {
                 edge_distance_y = f64::ceil(position.y) - 1.0 - position.y;
             }
 
-            let step1 = Vector::new(edge_distance_x, edge_distance_y);
+            let step1 = Vector::new(edge_distance_x, edge_distance_x / slope);
             let step2 = Vector::new(edge_distance_y * slope, edge_distance_y);
 
             if step1.length() < step2.length() {
-                position = position + step1
+                position += step1
             } else {
-                position = position + step2
+                position += step2
             };
 
             if self.tile(position, ray.direction).is_wall() == true {

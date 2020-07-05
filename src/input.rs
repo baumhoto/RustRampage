@@ -1,12 +1,13 @@
-use crate::vector::Vector;
+use crate::rotation::Rotation;
 
 #[derive(Debug, Default)]
 pub struct Input {
-    pub velocity: Vector,
+    pub speed: f64,
+    pub rotation: Rotation,
 }
 
 impl Input {
-    pub fn new(velocity: Vector) -> Self {
-        Self { velocity }
+    pub fn new(speed: f64, rotation: Rotation) -> Self {
+        Self { speed, rotation }
     }
 }
